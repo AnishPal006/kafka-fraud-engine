@@ -1,0 +1,17 @@
+server:
+  port: 8082 # Different port from Producer
+
+spring:
+  application:
+    name: fraud-detector
+  kafka:
+    bootstrap-servers: localhost:9092
+    streams:
+      application-id: fraud-detector-app # Crucial for state storage
+      properties:
+        # These tell Kafka Streams to treat keys as Strings and values as JSON
+        default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        default.value.serde: org.springframework.kafka.support.serializer.JsonSerde
+        # Trust the packages for JSON deserialization
+        spring.json.trusted.packages: "*"
+        spring.json.value.default.type: com.anish.fraud.payload.Transaction
