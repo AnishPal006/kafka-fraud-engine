@@ -1,0 +1,17 @@
+server:
+  port: 8083 # Producer=8081, Detector=8082, Alert=8083
+
+spring:
+  application:
+    name: alert-service
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: dashboard-group
+      auto-offset-reset: latest # Only show new frauds when the dashboard opens
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+        # We need to know what object to create from the JSON
+        spring.json.value.default.type: com.anish.fraud.payload.Transaction
